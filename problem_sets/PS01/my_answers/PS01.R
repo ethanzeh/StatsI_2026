@@ -60,7 +60,7 @@ cat("90 percent confidence interval upper bound:", ci90_upper_bound_t_iqs, "\n")
 # Alternate Hypothesis is iq > 100
 # Right tailed test
 
-test_statistic_iqs = (mean_iqs - 100) / se_iqs
+test_statistic_iqs <- (mean_iqs - 100) / se_iqs
 
 #.95 right tailed critical T value
 t_value_95_one_tailed <- 1.711
@@ -68,7 +68,8 @@ t_value_95_one_tailed <- 1.711
 # is the test_stat greater than the t_value
 test_statistic_iqs > t_value_95_one_tailed
 
-# Accept the null
+# Accept the null 
+iqs_p_value <- pt(q = test_statistic_iqs, df = length(iq_sample - 1), lower.tail = FALSE)
 
 
 #####################
@@ -76,37 +77,68 @@ test_statistic_iqs > t_value_95_one_tailed
 #####################
 
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_2026/main/datasets/expenditure.txt", header=T)
-expenditure$Region <- factor(expenditure$Region)
+expenditure$Region <- factor(expenditure$Region, levels = c(1, 2, 3, 4), labels = c("Northeast", "North Central", "South", "West"))
 
 # 2.1
-pairs(expenditure[, c("Y", "X1", "X2", "X3")])
+install.packages("GGally")
+install.packages("ggplot2")
+library(GGally)
+library(ggplot2)
+
+ggpairs(
+  expenditure[, c("Y", "X1", "X2", "X3")],
+  upper = list(
+    continuous = wrap("cor", size = 5)
+  ),
+  lower = list(
+    continuous = wrap(
+      "smooth",
+      method = "lm",
+      se = FALSE,
+      alpha = 0.5
+    )
+  ),
+  diag = list(
+    continuous = wrap("densityDiag")
+  ),
+  columnLabels = c(
+    "Y (Per Capita Housing Assistance Expenditure)",
+    "X1 (Per Capita Personal Income)",
+    "X2 (Financially Insecure Residents per 100k)",
+    "X3 (Urban Residents per 1k)"
+  )
+)
 
 # 2.2
+
 ggplot(expenditure, aes(x = Region, y = Y)) +
   geom_boxplot(alpha = 0.4, width = 0.5) +
-  geom_jitter(width = 0.1, size = 2.5) +
+  geom_jitter(width = 0.05, size = 2.5) +
+  stat_summary(fun = mean, geom = "point", color = "orange", size = 3) +
   labs(
     x = "Region",
-    y = "Y",
-    title = "Relationship Between Y and Region"
+    y = "Per Capita Housing Assistance Expenditure",
+    title = "Per Capita Housing Assistance Expenditure by Region"
   ) +
   theme_minimal()
 
 
 # 2.3
+
 ggplot(expenditure, aes(x = X1, y = Y)) +
   geom_point(size = 3) +
   geom_smooth(method = "lm", se = TRUE) +
   labs(
-    title = "Relationship Between Y and X1",
-    x = "X1",
-    y = "Y"
+    title = "Per Capita Housing Assistance Expenditure vs. Per Capita Personal Income",
+    x = "Per Capita Personal Income",
+    y = "Per Capita Housing Assistance Expenditure"
   ) +
   theme_minimal()
 
 
-ggplot(expenditure, aes(x = X1, y = Y, 
-               color = Region, shape = Region)) +
+# Region
+
+ggplot(expenditure, aes(x = X1, y = Y, color = Region, shape = Region)) +
   geom_point(size = 3.5, alpha = 0.8) +
   geom_smooth(
     aes(group = 1),
@@ -115,9 +147,9 @@ ggplot(expenditure, aes(x = X1, y = Y,
     color = "black"
   ) +
   labs(
-    title = "Relationship Between Y and X1 by Region",
-    x = "X1",
-    y = "Y",
+    title = "Per Capita Housing Assistance Expenditure vs. Personal Income by Region",
+    x = "Per Capita Personal Income",
+    y = "Per Capita Housing assistance Expenditure",
     color = "Region",
     shape = "Region"
   ) +
