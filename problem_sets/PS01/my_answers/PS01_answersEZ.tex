@@ -123,8 +123,27 @@ A school counselor was curious about the average of IQ of the students in her sc
 
 	\vspace{2cm}
 
-	\textbf{Code}
-	\lstinputlisting[language=R, firstline=59, lastline=74]{PS01_answersEZ.R}
+	\textbf{Hypothesis Testing}
+	\textbf{Step 1: Assumptions}
+
+		We must first make our assumptions about the population. Our data is continious, the sample size is small (n=25), and it is from sample of students.
+	\vspace{.3cm}
+	\textbf{Step 2: Hypothesis}
+	\lstinputlisting[language=R, firstline=59, lastline=60]{PS01_answersEZ.R}
+	\vspace{.3cm}
+	\textbf{Step 3: Test Statistic}
+	\lstinputlisting[language=R, firstline=61, lastline=69]{PS01_answersEZ.R}
+	\vspace{.3cm}
+	\textbf{Step 4: P-value}
+	\lstinputlisting[language=R, firstline=71, lastline=74]{PS01_answersEZ.R}
+	\vspace{.3cm}
+	\textbf{Step 5: Conclusion}
+
+	The null hypothesis is $H_0: \mu = 100$ and the alternative is $H_a: \mu > 100$, therefore this is a right-tailed $t$-test at $\alpha = 0.05$. The test statistic is $t = -0.596$, which is significantly below the critical value of 1.711, and the p-value (0.72) is much larger than 0.05. We therefore (both via assumption and with the P-test) fail to reject the null hypothesis. The sample mean (98.44) is below 100, so there is no evidence that the average IQ at this school is higher than the national average of 100.
+
+
+
+
 
 	\textbf{Output}
 	\begin{verbatim}
@@ -132,8 +151,7 @@ A school counselor was curious about the average of IQ of the students in her sc
 		P-value: 0.72 
 	\end{verbatim}
 
-\textbf{Explanation:}
-	The null hypothesis is $H_0: \mu = 100$ and the alternative is $H_a: \mu > 100$, therefore this is a right-tailed $t$-test at $\alpha = 0.05$. The test statistic is $t = -0.596$, which is significantly below the critical value of 1.711, and the p-value (0.72) is much larger than 0.05. We therefore (both via assumption and with the P-test) fail to reject the null hypothesis. The sample mean (98.44) is below 100, so there is no evidence that the average IQ at this school is higher than the national average of 100.
+
 \end{enumerate}
 
 \newpage
