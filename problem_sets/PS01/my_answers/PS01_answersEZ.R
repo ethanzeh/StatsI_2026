@@ -38,20 +38,20 @@ iq_sample <- c(105, 69, 86, 100, 82, 111, 104, 110, 87, 108, 87, 90, 94, 113, 11
 # 1.1
 
 # Using T-distrubution because population SD is not given (although IQ inherently has SD of 15)
-# Population mean not given... will use 100 and go with T-dist because sample size < 30?
+# Population mean not given... will use 100 and go with T-dist because sample size < 30
 
 mean_iqs <- mean(iq_sample)
 sd_iqs <- sd(iq_sample)
 
 # 24 degrees of freedom T value for 2 tails (source: https://www.sjsu.edu/faculty/gerstman/StatPrimer/t-table.pdf)
-t_value_iqs = 1.711
-se_iqs =  sd_iqs / sqrt(length(iq_sample))
+t_value_iqs <- 1.711
+se_iqs <-  sd_iqs / sqrt(length(iq_sample))
 
 ci90_lower_bound_t_iqs <- mean_iqs - (t_value_iqs * se_iqs)
 ci90_upper_bound_t_iqs <- mean_iqs + (t_value_iqs * se_iqs)
 
-cat("90 percent confidence interval lower bound:", ci90_lower_bound_t_iqs, "\n")
-cat("90 percent confidence interval upper bound:", ci90_upper_bound_t_iqs, "\n")
+cat("90 percent confidence interval lower bound:", round(ci90_lower_bound_t_iqs, digits = 2), "\n")
+cat("90 percent confidence interval upper bound:", round(ci90_upper_bound_t_iqs, digits = 2), "\n")
 
 # --------------------------------------------------------------------------------
 # 1.2
@@ -68,9 +68,10 @@ t_value_95_one_tailed <- 1.711
 # is the test_stat greater than the t_value
 test_statistic_iqs > t_value_95_one_tailed
 
-# Accept the null 
+# fail to reject the null
 iqs_p_value <- pt(q = test_statistic_iqs, df = length(iq_sample - 1), lower.tail = FALSE)
-
+cat("Test Statistic:", round(test_statistic_iqs, digits = 3), "\n")
+cat("P-value:", round(iqs_p_value, digits = 2), "\n")
 
 #####################
 # Problem 2
@@ -84,6 +85,8 @@ install.packages("GGally")
 install.packages("ggplot2")
 library(GGally)
 library(ggplot2)
+
+pdf("problem_sets/PS01/my_answers/graphs/graph2-1.pdf", width = 12, height = 12)
 
 ggpairs(
   expenditure[, c("Y", "X1", "X2", "X3")],
@@ -108,8 +111,11 @@ ggpairs(
     "X3 (Urban Residents per 1k)"
   )
 )
+dev.off()
 
 # 2.2
+
+pdf("problem_sets/PS01/my_answers/graphs/graph2-2.pdf", width = 10, height = 10)
 
 ggplot(expenditure, aes(x = Region, y = Y)) +
   geom_boxplot(alpha = 0.4, width = 0.5) +
@@ -122,8 +128,16 @@ ggplot(expenditure, aes(x = Region, y = Y)) +
   ) +
   theme_minimal()
 
+dev.off()
+means_region <- tapply(expenditure$Y, expenditure$Region, mean, na.rm = TRUE)
+cat(
+  "Means by region:", paste(names(means_region), round(means_region, 2), sep = " = "),
+  sep = "\n"
+)
 
 # 2.3
+
+pdf("problem_sets/PS01/my_answers/graphs/graph2-3-1.pdf", width = 10, height = 10)
 
 ggplot(expenditure, aes(x = X1, y = Y)) +
   geom_point(size = 3) +
@@ -134,9 +148,11 @@ ggplot(expenditure, aes(x = X1, y = Y)) +
     y = "Per Capita Housing Assistance Expenditure"
   ) +
   theme_minimal()
-
+dev.off()
 
 # Region
+
+pdf("problem_sets/PS01/my_answers/graphs/graph2-3-2.pdf", width = 10, height = 10)
 
 ggplot(expenditure, aes(x = X1, y = Y, color = Region, shape = Region)) +
   geom_point(size = 3.5, alpha = 0.8) +
@@ -154,3 +170,4 @@ ggplot(expenditure, aes(x = X1, y = Y, color = Region, shape = Region)) +
     shape = "Region"
   ) +
   theme_minimal()
+dev.off()
