@@ -103,7 +103,7 @@ help(Prestige)
 	\textbf{Explanation}
 	\vspace{.5cm}
 
-	After loading the \texttt{Prestige} data, I use \texttt{ifelse} to code \texttt{prof} as 1 and \texttt{bc}/\texttt{wc} as 0. The table checks the recode: 31 professional occupations are coded 1 and the 67 blue and white collar occupations are coded 0. The 4 occupations with no \texttt{type} stay \texttt{NA}, so \texttt{lm} drops them later and the models below use 98 observations.
+	After loading the \texttt{Prestige} data, I use \texttt{ifelse} to code \texttt{prof} as 1 and \texttt{bc}/\texttt{wc} as 0. Professional occupations are coded 1 and the blue and white collar occupations are coded 0. The 4 occupations with no \texttt{type} are \texttt{NA}, sowe drop them.
 	\vspace{1cm}
 
 	\textbf{Code}
